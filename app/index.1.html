@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -18,42 +18,42 @@
 
     <script>
 
-	    var flag = false;
-    
-        $(function(){
+        var flag = false;
+
+        $(function () {
 
             var code = document.getElementById('code');
-	    	var imgcode = document.getElementById('imgcode');
-		    var c = new KinerCode({
-		        	len: 4,//需要产生的验证码长度
-		        	chars: [
-		            	1, 2, 3, 4, 5, 6, 7, 8, 9, 0
-		        	],
-		        	question:false,//若给定词典为算数题，则此项必须选择true,程序将自动计算出结果进行校验【若选择此项，则可不配置len属性】,若选择经典模式，必须选择false
-		        	copy: false,//是否允许复制产生的验证码
-		        	bgColor:"",//背景颜色[与背景图任选其一设置]
-		        	bgImg:"bg.jpg",//若选择背景图片，则背景颜色失效
-		        	randomBg : true,//若选true则采用随机背景颜色，此时设置的bgImg和bgColor将失效
-		        	inputArea: code,//输入验证码的input对象绑定【 HTMLInputElement 】
-		        	codeArea: imgcode,//验证码放置的区域【HTMLDivElement 】
-		        	click2refresh:true,//是否点击验证码刷新验证码
-		        	false2refresh:true,//在填错验证码后是否刷新验证码
-		        	validateEven : "blur",//触发验证的方法名，如click，blur等
-		        	validateFn : function(result,code){
-		            	if(result){
-		                		flag = true;
-                                $("#result").text("已验证");
-		            	} else {
-					flag = false;
-                                $("#result").text("未验证");
-				}
-			
-		        	}
-	    	});
+            var imgcode = document.getElementById('imgcode');
+            var c = new KinerCode({
+                len: 4,//需要产生的验证码长度
+                chars: [
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 0
+                ],
+                question: false,//若给定词典为算数题，则此项必须选择true,程序将自动计算出结果进行校验【若选择此项，则可不配置len属性】,若选择经典模式，必须选择false
+                copy: false,//是否允许复制产生的验证码
+                bgColor: "",//背景颜色[与背景图任选其一设置]
+                bgImg: "bg.jpg",//若选择背景图片，则背景颜色失效
+                randomBg: true,//若选true则采用随机背景颜色，此时设置的bgImg和bgColor将失效
+                inputArea: code,//输入验证码的input对象绑定【 HTMLInputElement 】
+                codeArea: imgcode,//验证码放置的区域【HTMLDivElement 】
+                click2refresh: true,//是否点击验证码刷新验证码
+                false2refresh: true,//在填错验证码后是否刷新验证码
+                validateEven: "blur",//触发验证的方法名，如click，blur等
+                validateFn: function (result, code) {
+                    if (result) {
+                        flag = true;
+                        $("#result").text("已验证");
+                    } else {
+                        flag = false;
+                        $("#result").text("未验证");
+                    }
 
-       
+                }
+            });
+
+
         });
-        </script>
+    </script>
     <style>
         .mycode {
             display: inline-block;
@@ -87,8 +87,7 @@
                     </div>
                 </li>
             </ul>
-            <h3 id="result">
-                </h1>
+            <h3 id="result"></h3>
         </div>
     </div>
 </body>
