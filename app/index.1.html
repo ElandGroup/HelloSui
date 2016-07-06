@@ -18,12 +18,12 @@
 
     <script>
 
-	    var captchaFlag = false;
+	    var flag = false;
     
         $(function(){
 
-            var inp = document.getElementById('capcha');
-	    	var code = document.getElementById('imgcaptcha');
+            var code = document.getElementById('code');
+	    	var imgcode = document.getElementById('imgcode');
 		    var c = new KinerCode({
 		        	len: 4,//需要产生的验证码长度
 		        	chars: [
@@ -34,17 +34,17 @@
 		        	bgColor:"",//背景颜色[与背景图任选其一设置]
 		        	bgImg:"bg.jpg",//若选择背景图片，则背景颜色失效
 		        	randomBg : true,//若选true则采用随机背景颜色，此时设置的bgImg和bgColor将失效
-		        	inputArea: inp,//输入验证码的input对象绑定【 HTMLInputElement 】
-		        	codeArea: code,//验证码放置的区域【HTMLDivElement 】
+		        	inputArea: code,//输入验证码的input对象绑定【 HTMLInputElement 】
+		        	codeArea: imgcode,//验证码放置的区域【HTMLDivElement 】
 		        	click2refresh:true,//是否点击验证码刷新验证码
 		        	false2refresh:true,//在填错验证码后是否刷新验证码
-		        	validateEven : "blur",//触发验证的对象，若不指定则默认为已绑定的输入框inputArea
-		        	validateFn : function(result,code){//触发验证的方法名，如click，blur等
+		        	validateEven : "blur",//触发验证的方法名，如click，blur等
+		        	validateFn : function(result,code){
 		            	if(result){
-		                		captchaFlag = true;
+		                		flag = true;
                                 $("#result").text("已验证");
 		            	} else {
-					captchaFlag = false;
+					flag = false;
                                 $("#result").text("未验证");
 				}
 			
@@ -80,9 +80,9 @@
                         <div class="item-media"></div>
                         <div class="item-inner">
                             <div class="item-input">
-                                <input id="capcha" type="text" placeholder="请输入验证码" />
+                                <input id="code" type="text" placeholder="请输入验证码" />
                             </div>
-                            <span id="imgcaptcha" class="mycode"></span>
+                            <span id="imgcode" class="mycode"></span>
                         </div>
                     </div>
                 </li>
