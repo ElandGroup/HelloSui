@@ -54,7 +54,7 @@
                                 }
                             }
                         },
-                        failure: function (data) {
+                        error: function (data) {
                             isPhoneValid = false;
                             $("#checkPhone").hide();
                             $.toast("系统忙，请稍后再试.");
@@ -111,6 +111,12 @@
 
             $("#getPhoneCode").on("click", function () {
 
+                if (!isPhoneValid)
+                {
+                    $.toast("手机号输入不正确");
+                    return;
+                }
+
                 fn_sendSMS();
 
             });
@@ -153,6 +159,9 @@
                     },
                     error: function (data) {
                         console.log(data);
+                        var errorInfo = data.error == null ? "" : data.error.message;
+                        //$.alert(errorInfo, '注册失败!');
+                        $.toast('注册失败!' + errorInfo);
                     }
                 });
 
@@ -193,6 +202,9 @@
                     },
                     error: function (data) {
                         console.log(data);
+                        var errorInfo = data.error == null ? "" : data.error.message;
+                        //$.alert(errorInfo, '注册失败!');
+                        $.toast('注册失败!' + errorInfo);
                     }
                 });
 
@@ -326,7 +338,7 @@
                         <div class="item-inner">
                             <div class="item-title label"><span style="color:red">*</span>密码</div>
                             <div class="item-input">
-                                <input id="pwd" type="password" placeholder="请输入6位密码"  maxlength="11" onkeyup="value =this.value.replace(/\D+/g, '')"/>
+                                <input id="pwd" type="password" placeholder="请输入6位密码"  maxlength="6"/>
                             </div>
                             <i id="checkPwd" class="icon icon-check pull-right" style="color:green;display:none"></i>
                         </div>

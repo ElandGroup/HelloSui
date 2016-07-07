@@ -13,19 +13,10 @@
     <link rel="stylesheet" href="plugins/msui-0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="plugins/msui-0.6.2/css/sm-extend.min.css">
     <script src="js/zepto.min.js"></script>
-    <script src="js/kinercode.js"></script>
-
-
     <script>
-
-        var flag = false;
-
         $(function () {
-
             $("#getCode").on("click", function () {
-
                 fn_sendSMS();
-
             });
 
             function fn_sendSMS()
@@ -36,16 +27,13 @@
                     var num = /^\d{1,2}/.exec(target.text());
                     var currentSecond = parseInt(num[0]);
                     if (currentSecond == 1) {
-
                         target.text("重新发送").removeClass("disabled").on({ "click": fn_sendSMS });
                         clearInterval(intervalId);
-
                     } else {
                         target.text((--currentSecond) + "秒后重新发送");
                     }
                 }, 1000);
             }
-
         });
     </script>
     <style>
