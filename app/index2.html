@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>msui</title>
+
+    <link rel="stylesheet" href="plugins/msui-0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="plugins/msui-0.6.2/css/sm-extend.min.css">
+    <script src="js/zepto.min.js"></script>
+    <script src="js/kinercode.js"></script>
+
+
+    <script>
+
+        var flag = false;
+
+        $(function () {
+
+            $("#getCode").on("click", function () {
+
+                var params = {
+                    mobile: "15811016818",
+                    brandCode: "mh"
+                };
+                $.ajax({
+                    url: "http://mh.accurate9.com:9092/api/common/sms/get_code",
+                    type: "GET",
+                    data: params,
+                    dataType: "json",
+                    contentType: "application/x-www-form-urlencoded",
+                    success: function (data, status, jqXHR) {
+                        if (data != null && data.success && data.result != null && data.result.status == "OK") {
+
+                        }
+                    },
+                    failure: function () {
+
+                    }
+                });
+
+            });
+
+
+
+            $("#reg").on("click", function () {
+
+                var params = {
+                    mobile: "15811016818",
+                    password: "1234",
+                    store: "CR00",
+                    verCode: $("#phoneCode").val()
+                };
+                $.ajax({
+                    url: "http://mh.accurate9.com:9092/api/mh/user/register",
+                    type: "POST",
+                    data: params,
+                    dataType: "json",
+                    success: function (data, status, jqXHR) {
+                        if (data != null && data.success && data.result != null && data.result.status == "OK") {
+
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+
+            });
+        });
+    </script>
+    <style>
+        .mycode {
+            display: inline-block;
+            width: 120px;
+            height: 40px;
+            vertical-align: middle;
+            border-radius: 10px;
+            box-shadow: #000000 inset 0px 0px 2px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="content">
+        <h1>Hello Sui</h1>
+        <div class="list-block">
+            <ul>
+                <!-- Text inputs -->
+                <li>
+                    <!-- Text inputs -->
+                    <div class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <input id="phoneCode" type="text" placeholder="请输入手机验证码" />
+                            </div>
+                            <a id="getCode" href="#" class="button button-light">获取验证码 </a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <h3 id="result"></h3>
+        </div>
+
+        <div class="content-block">
+            <div class="row">
+                <div class="col-50"><a id="reg" href="#" class="button button-big button-fill button-success">Registry</a></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -8,48 +8,315 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>msui</title>
+    <title>Registry</title>
 
     <link rel="stylesheet" href="plugins/msui-0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="plugins/msui-0.6.2/css/sm-extend.min.css">
     <script src="js/zepto.min.js"></script>
     <script src="plugins/msui-0.6.2/js/sm.min.js"></script>
     <script src="plugins/msui-0.6.2/js/sm-extend.min.js"></script>
+    <script src="js/kinercode.js"></script>
+
     <script>
-        $(function(){
-            $("#phone").on("blur",function(){
-                var value =$(this).val();
-                if(value!=null&&/^\d{11}$/.test(value))
-                {
-                    $("#check").show();
+
+        var isPhoneValid = false;
+        var isCodeValid = false;
+        var isPwdValid = false;
+        var isPhoneCodeValid = false;
+        var intervalId;
+
+        $(function () {
+            InitCode();
+
+            //1.phone
+            $("#phone").on("blur", function () {
+                var value = $(this).val();
+                if (value != null && /^1\d{10}$/.test(value)) {
+
+                    var params = {
+                        mobile: $("#phone").val()
+                    };
+                    $.ajax({
+                        url: "http://mh.accurate9.com:9092/api/mh/user/check_mobile",
+                        type: "GET",
+                        data: params,
+                        dataType: "json",
+                        success: function (data, status, jqXHR) {
+                            if (data != null && data.success && data.result != null) {
+                                if (!data.result.exist) {
+                                    isPhoneValid = true;
+                                    $("#checkPhone").show();
+                                }
+                                else {
+                                    isPhoneValid = false;
+                                    $("#checkPhone").hide();
+                                    $.toast("手机号已注册!");
+                                }
+                            }
+                        },
+                        failure: function (data) {
+                            isPhoneValid = false;
+                            $("#checkPhone").hide();
+                            $.toast("系统忙，请稍后再试.");
+                        }
+                    });
+
+
                 }
-                else
-                {
-                    $("#check").hide();
+                else {
+                    isPhoneValid = false;
+                    $("#checkPhone").hide();
                     $.toast("请输入正确的手机号.");
+                    // $("#msg").text("请输入正确的手机号.");
                 }
             });
+
+            //2.pwd
+            $("#pwd").on("blur", function () {
+                var value = $(this).val();
+                if (value != null && value.length >= 6) {
+                    isPwdValid = true;
+                    $("#checkPwd").show();
+                }
+                else {
+                    isPwdValid = false;
+                    $("#checkPwd").hide();
+                    // $.toast("请输入8位的密码.");
+                }
+            });
+
+            //3.phoneCode
+            $("#getPhoneCode").on("click", function () {
+
+                var params = {
+                    mobile: $("#phone").val(),
+                    brandCode: "mh"
+                };
+                $.ajax({
+                    url: "http://mh.accurate9.com:9092/api/common/sms/get_code",
+                    type: "GET",
+                    data: params,
+                    dataType: "json",
+                    success: function (data, status, jqXHR) {
+                        if (data != null && data.success && data.result != null && data.result.status == "OK") {
+                            isPhoneCodeValid = true;
+                        }
+                    },
+                    failure: function () {
+                        isPhoneCodeValid = false;
+                    }
+                });
+
+            });
+
+            $("#getPhoneCode").on("click", function () {
+
+                fn_sendSMS();
+
+            });
+
+            $("#reg").on("click", function () {
+
+
+                var isValid = validRegistry();
+                if (!isValid) {
+                    return;
+                }
+
+                var params = {
+                    mobile: $("#phone").val(),
+                    password: $("#pwd").val(),
+                    store: "CR00",
+                    verCode: $("#phoneCode").val()
+                };
+                $.ajax({
+                    crossDomain: true,
+                    url: "http://mh.accurate9.com:9092/api/mh/user/register",
+                    type: "POST",
+                    data: params,
+                    dataType: "json",
+                    success: function (data, status, jqXHR) {
+                        if (data != null) {
+                            clearInterval(intervalId);
+                            if (data.success) {
+                                $.toast("恭喜你，注册成功");
+
+                            }
+                            else {
+                                var errorInfo = data.error == null ? "" : data.error.message;
+                                //$.alert(errorInfo, '注册失败!');
+                                $.toast('注册失败!' + errorInfo);
+
+                            }
+
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+
+            });
+
+            $("#testReg").on("click", function () {
+
+                var isValid = validRegistryTest();
+                if (!isValid) {
+                    return;
+                }
+
+                var params = {
+                    mobile: $("#phone").val(),
+                    password: $("#pwd").val(),
+                    store: "CR00"
+                };
+                $.ajax({
+                    url: "http://mh.accurate9.com:9092/api/mh/user/register",
+                    type: "POST",
+                    data: params,
+                    dataType: "json",
+                    success: function (data, status, jqXHR) {
+                        if (data != null) {
+                            clearInterval(intervalId);
+                            if (data.success) {
+                                $.toast("恭喜你，注册成功");
+
+                            }
+                            else {
+                                var errorInfo = data.error == null ? "" : data.error.message;
+                                //$.alert(errorInfo, '注册失败!');
+                                $.toast('注册失败!' + errorInfo);
+
+                            }
+
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+
+            });
+
         });
-        </script>
+
+        function validRegistry() {
+            var isValid = false;
+            if (!isPhoneValid) {
+                $.toast("手机号不正确.");
+            }
+            else if (!isPwdValid) {
+                $.toast("密码不正确.");
+            }
+            else if (!isCodeValid) {
+                $.toast("验证码不正确.");
+            } else if (!isPhoneCodeValid) {
+                $.toast("短信验证码未发送，请重新发送.");
+            }
+            else {
+                isValid = true;
+            }
+            return isValid;
+
+        }
+
+        function validRegistryTest() {
+            var isValid = false;
+            if (!isPhoneValid) {
+                $.toast("手机号不正确.");
+            }
+            else if (!isPwdValid) {
+                $.toast("密码不正确.");
+            }
+            else if (!isCodeValid) {
+
+                $.toast("验证码不正确.");
+            }
+            else {
+                isValid = true;
+            }
+            return isValid;
+
+        }
+
+        function InitCode() {
+
+            var c = new KinerCode({
+                len: 4,//需要产生的验证码长度
+                chars: [
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 0
+                ],
+                question: false,//若给定词典为算数题，则此项必须选择true,程序将自动计算出结果进行校验【若选择此项，则可不配置len属性】,若选择经典模式，必须选择false
+                copy: false,//是否允许复制产生的验证码
+                bgColor: "",//背景颜色[与背景图任选其一设置]
+                bgImg: "bg.jpg",//若选择背景图片，则背景颜色失效
+                randomBg: true,//若选true则采用随机背景颜色，此时设置的bgImg和bgColor将失效
+                inputArea: document.getElementById('code'),//输入验证码的input对象绑定【 HTMLInputElement 】
+                codeArea: document.getElementById('imgcode'),//验证码放置的区域【HTMLDivElement 】
+                click2refresh: true,//是否点击验证码刷新验证码
+                false2refresh: false,//在填错验证码后是否刷新验证码
+                validateEven: "blur",//触发验证的方法名，如click，blur等
+                validateFn: function (result, code) {
+                    if (result) {
+                        isCodeValid = true;
+                    } else {
+                        isCodeValid = false;
+                    }
+
+                }
+            });
+        }
+
+        function fn_sendSMS() {
+            $("#getPhoneCode").text("5秒后重新发送").addClass("disabled").off("click");
+            intervalId = setInterval(function () {
+                var target = $("#getPhoneCode");
+                var num = /^\d{1,2}/.exec(target.text());
+                var currentSecond = parseInt(num[0]);
+                if (currentSecond == 1) {
+
+                    target.text("重新发送").removeClass("disabled").on({ "click": fn_sendSMS });
+                    clearInterval(intervalId);
+
+                } else {
+                    target.text((--currentSecond) + "秒后重新发送");
+                }
+            }, 1000);
+        }
+
+    </script>
+    <style>
+        .mycode {
+            width: 10em;
+            height: 2em;
+        }
+
+        .button-1X {
+            font-size: .75rem;
+            width: 11em;
+            height: 2.3em;
+            line-height: 1.6rem;
+        }
+    </style>
 
 </head>
 
 <body>
 
     <div class="content">
-        <h1>Hello Sui</h1>
+        <!--<h1>Hello Sui</h1>-->
         <div class="list-block">
-            <!-- Text inputs -->
             <ul>
+                <!-- Text inputs -->
                 <li>
                     <div class="item-content">
                         <div class="item-media"></div>
                         <div class="item-inner">
-                            <div class="item-title label">手机</div>
+                            <div class="item-title label"><span style="color:red">*</span>手机号</div>
                             <div class="item-input">
-                                <input id="phone" type="text" placeholder="Your phone" />
+                                <input id="phone" type="tel" placeholder="请输入手机号" maxlength="11" onkeyup="value =this.value.replace(/\D+/g, '')"/>
                             </div>
-                            <i id="check" class="icon icon-check pull-right" style="color:green;display:none"></i>
+                            <i id="checkPhone" class="icon icon-check pull-right" style="color:green;display:none"></i>
                         </div>
                     </div>
                 </li>
@@ -57,14 +324,49 @@
                     <div class="item-content">
                         <div class="item-media"></div>
                         <div class="item-inner">
-                            <div class="item-title label">姓名</div>
+                            <div class="item-title label"><span style="color:red">*</span>密码</div>
                             <div class="item-input">
-                                <input type="text" placeholder="Your name" />
+                                <input id="pwd" type="password" placeholder="请输入6位密码"  maxlength="11" onkeyup="value =this.value.replace(/\D+/g, '')"/>
                             </div>
+                            <i id="checkPwd" class="icon icon-check pull-right" style="color:green;display:none"></i>
                         </div>
                     </div>
                 </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <input id="code" type="tel" placeholder="请输入验证码" maxlength="4" onkeyup="value =this.value.replace(/\D+/g, '')" />
+                            </div>
+                            <span id="imgcode" class="mycode"></span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <input id="phoneCode" type="text" placeholder="请输入手机验证码" />
+                            </div>
+                            <a id="getPhoneCode" href="#" class="button button-light button-1X ">获取验证码 </a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <h3 id="msg" style="color:red"></h3>
         </div>
+
+        <div class="content-block">
+            <div><a id="reg" href="#" class="button button-big button-fill button-success disabled">立即注册</a></div>
+        </div>
+
+        <div class="content-block">
+            <div><a id="testReg" href="#" class="button button-big button-fill button-success">测试</a></div>
+        </div>
+
+    </div>
 </body>
 
 </html>
