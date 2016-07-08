@@ -13,20 +13,42 @@
     <link rel="stylesheet" href="../plugins/msui-0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="../plugins/msui-0.6.2/css/sm-extend.min.css">
     <script src="../js/zepto.min.js"></script>
-    <script src="../plugins/msui-0.6.2/js/sm.min.js"></script>
-    <script src="../plugins/msui-0.6.2/js/sm-extend.min.js"></script>
+
+  
     <script>
 
-        var name;
-        var phone;
+        var isNameValid;
+        var isBirthdayValid;
+            
+        var isEmailValid;
+        var isIsMerryValid;
+
+
         $(function () {
             $("#modifyPersonInfo").on("click", function () {
 
             });
+
+            $("#city-picker").cityPicker({
+                toolbarTemplate: '<header class="bar bar-nav">\
+                    <button class="button button-link pull-right close-picker">确定</button>\
+                    <h1 class="title">请选择地址</h1>\
+                    </header>'
+            });
         });
 
         function validPersonInfo() {
-
+            var isValid = false;
+            if (!isNameValid) {
+                $.toast("姓名录入有误!");
+            }
+            else if (!isNameValid) {
+                $.toast("姓名录入有误!");
+            }
+            else {
+                isValid = true;
+            }
+            return isValid;
         }
     </script>
 
@@ -117,11 +139,21 @@
                 </li>
                 <li class="align-top">
                     <div class="item-content">
-                        <div class="item-media"><i class="icon icon-form-comment"></i></div>
+                        <div class="item-media"></div>
                         <div class="item-inner">
                             <div class="item-title label"><span style="color:transparent">*</span>地址</div>
                             <div class="item-input">
-                                <textarea id="address"></textarea>
+                                <input id="city-picker" type="text"/>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="align-top">
+                    <div class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <textarea id="addressDetail"></textarea>
                             </div>
                         </div>
                     </div>
@@ -163,6 +195,10 @@
         </div>
 
     </div>
+    <script src="../plugins/msui-0.6.2/js/sm.min.js"></script>
+    <script src="../plugins/msui-0.6.2/js/sm-extend.min.js"></script>
+    <script src="../js/picker.js"></script>
+    <script src="../js/sm-city-picker.min.js"></script>
 </body>
 
 </html>

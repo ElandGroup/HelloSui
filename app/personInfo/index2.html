@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>msui</title>
+
+    <!--<link rel="stylesheet" href="plugins/msui-0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="plugins/msui-0.6.2/css/sm-extend.min.css">-->
+    <script src="../js/zepto.min.js"></script>
+
+
+    <script>
+
+        var flag = false;
+
+        $(function () {
+
+            $("#update").on("click", function () {
+
+                var params = {
+                    givenName: "Chen",
+                    surName: "WenQiang",
+                    sex: "M",
+                    email: "chwq9000@qq.com",
+                    birthday: "19900614",
+                    maritalStatus: "0",
+                    country: "CN",
+                    province: "北京市",
+                    city: "市辖区",
+                    zone: "朝阳区",
+                    address: "恒通商务园",
+                    job: "IT",
+                    income: "100000",
+                    licensePlate: "",
+                    isHaveChrilden: "0"
+                };
+                $.ajax({
+                    url: "http://10.202.101.52:9092/api/mh/user/update_member_info",
+                    //url: "http://mh.accurate9.com:9092/api/mh/user/update_member_info",
+                    "headers": {
+                        "jwt_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJicmFuZENvZGUiOiJtaCIsIm9wZW5JZCI6IiIsIm1vYmlsZSI6IjEzMTYxOTU1MDA4IiwiZXhwIjoxNDY4MDMwNDkwLCJpc3MiOiJsaWNoZSJ9.yOQ8T1mCyIMFaS-UGXFnYcwuMfZYtvYfx3a03k7NGTc"
+                    },
+                    type: "POST",
+                    data: params,
+                    dataType: "json",
+                    success: function (data, status, jqXHR) {
+                        if (data != null && data.success) {
+                            alert("success");
+                        }
+                        else {
+                            alert("failure");
+
+                        }
+                    },
+                    failure: function () {
+                        alert("failure");
+
+                    }
+                });
+
+            });
+
+        });
+    </script>
+
+
+</head>
+
+<body>
+
+    <div class="content">
+        <h1>Hello Sui</h1>
+
+        <div class="content-block">
+            <div class="row">
+                <div class="col-50"><a id="update" href="#" class="button button-big button-fill button-success">Registry</a></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
