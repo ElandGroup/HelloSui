@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -8,29 +8,27 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>msui</title>
-
-    <link rel="stylesheet" href="plugins/msui-0.6.2/css/sm.min.css">
-    <link rel="stylesheet" href="plugins/msui-0.6.2/css/sm-extend.min.css">
-    <script src="js/zepto.min.js"></script>
-    <script src="plugins/msui-0.6.2/js/sm.min.js"></script>
-    <script src="plugins/msui-0.6.2/js/sm-extend.min.js"></script>
+    <title>sui</title>
+    <!--<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">-->
+    <link rel="stylesheet" href="../plugins/msui-0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="../plugins/msui-0.6.2/css/sm-extend.min.css">
+    <script src="../js/zepto.min.js"></script>
+    <script src="../plugins/msui-0.6.2/js/sm.min.js"></script>
+    <script src="../plugins/msui-0.6.2/js/sm-extend.min.js"></script>
     <script>
-        $(function(){
-            $("#phone").on("blur",function(){
-                var value =$(this).val();
-                if(value!=null&&/^\d{11}$/.test(value))
-                {
+        $(function () {
+            $("#phone").on("blur", function () {
+                var value = $(this).val();
+                if (value != null && /^\d{11}$/.test(value)) {
                     $("#check").show();
                 }
-                else
-                {
+                else {
                     $("#check").hide();
                     $.toast("请输入正确的手机号.");
                 }
             });
         });
-        </script>
+    </script>
 
 </head>
 
@@ -64,7 +62,9 @@
                         </div>
                     </div>
                 </li>
+                </ul>
         </div>
+    </div>
 </body>
 
 </html>

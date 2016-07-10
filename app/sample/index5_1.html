@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>sui</title>
+
+    <link href="../plugins/msui-0.6.2/css/sm.min.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div class="content">
+        <h3>省市县，地址太长时，用textarea</h3>
+        <p></p>
+        <h3>例如：新疆</h3>
+
+        <div class="list-block">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">
+                            <div class="item-title label">地址(长)</div>
+                            <div class="item-input">
+                                <textarea style="height:4em;" id="address2">新疆 克孜勒苏柯尔克孜自治州 阿图什市</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="../js/zepto.min.js"></script>
+    <script src="../plugins/msui-0.6.2/js/sm.min.js"></script>
+    <script src="../plugins/msui-0.6.2/js/sm-extend.min.js"></script>
+    <script src="../js/sm-city-picker.min.js"></script>
+    <script>
+        $(function () {
+            $("#address2").cityPicker({
+                toolbarTemplate: '<header class="bar bar-nav">\
+                    <button class="button button-link pull-right close-picker">确定</button>\
+                    <h1 class="title">请选择地址(area)</h1>\
+                    </header>',
+            });
+          
+            $("#address2").on("click", function () {
+                var arr = $("#address2").val().split(" ");
+                var pro = arr[0];
+                var ci = arr[1];
+                if (arr.length == 3)
+                {
+                    var co = arr[2];
+                }
+
+            });
+        });
+    </script>
+</body>
+
+</html>

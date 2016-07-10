@@ -6429,7 +6429,7 @@ $.smConfig.rawCitiesData = [
         "type":1
     },
     {
-        "name":"内蒙古",
+        "name": "内蒙古自治区",
         "sub":[
             {
                 "name":"请选择",
@@ -11343,7 +11343,7 @@ $.smConfig.rawCitiesData = [
         "type":1
     },
     {
-        "name":"西藏",
+        "name": "西藏自治区",
         "sub":[
             {
                 "name":"请选择",
@@ -12271,7 +12271,7 @@ $.smConfig.rawCitiesData = [
         "type":1
     },
     {
-        "name":"宁夏",
+        "name": "宁夏回族自治区",
         "sub":[
             {
                 "name":"请选择",
@@ -12649,7 +12649,7 @@ $.smConfig.rawCitiesData = [
         "type":1
     },
     {
-        "name":"新疆",
+        "name": "新疆维吾尔自治区",
         "sub":[
             {
                 "name":"请选择",
