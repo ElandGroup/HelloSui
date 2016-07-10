@@ -13,29 +13,11 @@
     <link rel="stylesheet" href="../plugins/msui-0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="../plugins/msui-0.6.2/css/sm-extend.min.css">
     <link href="../plugins/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <script src="../js/zepto.min.js"></script>
-
-
-    <script>
-
-        var isNameValid;
-        var isBirthdayValid;
-
-        var isEmailValid;
-        var isIsMerryValid;
-
-
-        $(function () {
-            $("#addressDetail").on("input propertychange", function () {
-
-            });
-        });
-    </script>
+ 
 
     <style>
-        .addressCount {
-            color: #B2B2B2;
-            text-align: right;
+        .blue1 {
+            color: #0894ec;
         }
     </style>
 </head>
@@ -53,16 +35,23 @@
                         <div class="item-media"></div>
                         <div class="item-inner">
                             <div class="item-title label"><span style="color:transparent">*</span>性别</div>
-                            <div class="item-input">
-                                <input type="text" value="=121212" />
-                                <div style="color:orangered;text-align:left; vertical-align:central;">
-                                    <span title="M"><i class="fa fa-check-circle fa-icon-4x">男</i></span>
-                                    <span title="F"><i class="fa fa-circle-o">女</i></span>
-
-                                </div>
-                           
-                               
+                            <div id="sex" class="item-title pull-left" style="margin-top:0.2em;width:100%">
+                                <span title="M" style="margin-right:0.25em"><i class="fa fa-check-circle fa-icon-4x blue1"></i>男</span>
+                                <span title="F"><i class="fa fa-circle-o fa-icon-4x blue1"></i>女</span>
                             </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">
+                            <div class="item-title label"><span style="color:transparent">*</span>手机</div>
+                            <div class="item-input">
+                                <input id="phone" type="text" placeholder="Your phone" />
+                            </div>
+                            <i id="check" class="icon icon-check pull-right" style="color:green;display:none"></i>
                         </div>
                     </div>
                 </li>
@@ -71,10 +60,17 @@
 
 
     </div>
+    <script src="../js/zepto.min.js"></script>
     <script src="../plugins/msui-0.6.2/js/sm.min.js"></script>
-    <script src="../plugins/msui-0.6.2/js/sm-extend.min.js"></script>
-    <script src="../js/picker.js"></script>
-    <script src="../js/sm-city-picker.min.js"></script>
+    <script>
+        $(function () {
+            $("#sex").on("click", function () {
+
+            });
+        });
+
+       
+    </script>
 </body>
 
 </html>

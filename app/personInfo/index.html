@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -12,79 +12,7 @@
 
     <link rel="stylesheet" href="../plugins/msui-0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="../plugins/msui-0.6.2/css/sm-extend.min.css">
-    <script src="../js/zepto.min.js"></script>
-
-  
-    <script>
-
-        var isNameValid;
-        var isBirthdayValid;
-            
-        var isEmailValid;
-        var isIsMerryValid;
-
-
-        $(function () {
-            $("#modifyPersonInfo").on("click", function () {
-
-            });
-
-
-            var raw;
-
-            var params = {
-                level: 2
-            };
-            $.ajax({
-                url: "http://mh.accurate9.com:9092/api/mh/user/get_area",
-                type: "GET",
-                data: params,
-                dataType: "json",
-                asnyc:false,
-                success: function (data, status, jqXHR) {
-                    if (data != null && data.success && data.result != null) {
-                        raw = data.result;
-                        var provinces = raw.map(function (d) {
-                            return d.RegionName;
-                        });
-                        $("#add1").picker({
-                            toolbarTemplate: '<header class="bar bar-nav">\
-                              <button class="button button-link pull-right close-picker">确定</button>\
-                              <h1 class="title">请选择省</h1>\
-                              </header>',
-                            cols: [
-                              {
-                                  textAlign: 'center',
-                                  values: provinces
-                              }
-                            ]
-                        });
-
-                    }
-                },
-                error: function (data) {
-                    $.toast("系统忙，请稍后再试.");
-                }
-            });
-
-        
-
-        });
-
-        function validPersonInfo() {
-            var isValid = false;
-            if (!isNameValid) {
-                $.toast("姓名录入有误!");
-            }
-            else if (!isNameValid) {
-                $.toast("姓名录入有误!");
-            }
-            else {
-                isValid = true;
-            }
-            return isValid;
-        }
-    </script>
+    <link href="../plugins/font-awesome/css/font-awesome.css" rel="stylesheet" />
 
     <style>
         .mycode {
@@ -108,14 +36,27 @@
             padding: 8px 15px;
         }
 
-        .text-red {
+        .text-orangered {
             color: orangered;
+        }
+
+        .text-blue {
+            color: #0894ec;
+        }
+
+        .text-transparent {
+            color: transparent;
+        }
+
+        .countRight {
+            color: #B2B2B2;
+            text-align: right;
         }
     </style>
 
 </head>
 
-<body>
+<body style="background-color:transparent;top:-1em;">
 
     <div class="content">
         <!--<h1>Hello Sui</h1>-->
@@ -130,6 +71,7 @@
                             <div class="item-input">
                                 <input id="name" type="text" placeholder="请输入姓名" />
                             </div>
+                            <i id="user-icon" class="fa fa-exclamation-circle text-transparent"></i>
                         </div>
                     </div>
                 </li>
@@ -138,10 +80,10 @@
                         <div class="item-media"><i class="icon icon-form-gender"></i></div>
                         <div class="item-inner">
                             <div class="item-title label"><span style="color:red">*</span>性别</div>
-                            <div id="sex" class="item-input">
-                                <select>
+                            <div class="item-input">
+                                <select id="sex">
                                     <option value="M">男</option>
-                                    <option value="F">女</option>
+                                    <option value="F" selected>女</option>
                                 </select>
                             </div>
                         </div>
@@ -154,7 +96,7 @@
                         <div class="item-inner">
                             <div class="item-title label"><span style="color:red">*</span>生日</div>
                             <div class="item-input">
-                                <input id="birthday" type="date" placeholder="请输入生日">
+                                <input id="birthday" type="date" placeholder="请输入生日" value="1900-01-01" />
                             </div>
                         </div>
                     </div>
@@ -165,7 +107,7 @@
                         <div class="item-inner">
                             <div class="item-title label"><span style="color:red">*</span>手机</div>
                             <div class="item-input">
-                                <input id="phone" class="disabled" readonly="readonly" type="tel" placeholder="请输入手机号"/>
+                                <input id="phone" class="disabled" readonly="readonly" type="tel" placeholder="请输入手机号" />
                             </div>
                             <i id="checkPhone" class="icon icon-check pull-right" style="color:green;display:none"></i>
                         </div>
@@ -175,22 +117,11 @@
                     <div class="item-content">
                         <div class="item-media"></div>
                         <div class="item-inner">
-                            <div class="item-title label"><span style="color:transparent">*</span>省/市</div>
+                            <div class="item-title label"><span style="color:transparent">*</span>地址</div>
                             <div class="item-input">
-                                <input id="add1" type="text" />
-                                <input id="add2" type="text"/>
+                                <textarea id="address" placeholder="请选择省市" type="text" style="height:4em"></textarea>
                             </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="align-top">
-                    <div class="item-content">
-                        <div class="item-media"></div>
-                        <div class="item-inner">
-                            <div class="item-title label"><span style="color:transparent">*</span>县</div>
-                            <div class="item-input">
-                                <input id="add3" type="text" />
-                            </div>
+                            <i id="address-icon" class="fa fa-exclamation-circle text-transparent"></i>
                         </div>
                     </div>
                 </li>
@@ -199,8 +130,8 @@
                         <div class="item-media"></div>
                         <div class="item-inner">
                             <div class="item-input">
-                                <textarea id="addressDetail"></textarea>
-                                <div class="addressCount"><span>0</span>/40</div>
+                                <textarea id="addressDetail" placeholder="输入详细地址之前，请先选择地址" style="height:4em" maxlength="40"></textarea>
+                                <div class="countRight"><span id="addressCount">0</span>/40</div>
                             </div>
                         </div>
                     </div>
@@ -211,8 +142,9 @@
                         <div class="item-inner">
                             <div class="item-title label"><span style="color:transparent">*</span>邮箱</div>
                             <div class="item-input">
-                                <input type="email" placeholder="请输入邮箱">
+                                <input id="email" type="email" placeholder="请输入邮箱">
                             </div>
+                            <i id="email-icon" class="fa fa-exclamation-circle text-transparent"></i>
                         </div>
                     </div>
                 </li>
@@ -222,7 +154,7 @@
                         <div class="item-inner">
                             <div class="item-title label"><span style="color:red">*</span>婚否</div>
                             <div class="item-input">
-                                <select>
+                                <select id="marry">
                                     <option value="0">未婚</option>
                                     <option value="1">已婚</option>
                                 </select>
@@ -231,20 +163,184 @@
                     </div>
                 </li>
             </ul>
+            <div class="content-block" style="margin-top:0.5em;">
+                <div><a id="modifyPersonInfo" href="#" class="button button-big button-fill ">提交</a></div>
+            </div>
+            <div class="content-block" style="margin-top:-1em;">
+                <span class="border-dotted user-info-padded text-red  button-fill" style="display:block;">* 为必填项</span>
+            </div>
         </div>
 
-        <div class="content-block">
-            <div><a id="modifyPersonInfo" href="#" class="button button-big button-fill ">提交</a></div>
-        </div>
 
-        <div class="content-block">
-            <span class="border-dotted user-info-padded text-red  button-fill">* 为必填项，性别、生日不可重复修改。</span>
-        </div>
 
     </div>
-    <script src="../plugins/msui-0.6.2/js/sm.min.js"></script>
+    <script src="../js/zepto.min.js"></script>
+    <!--<script src="../plugins/msui-0.6.2/js/sm.min.js"></script>-->
+    <script src="sm.js"></script>
     <script src="../plugins/msui-0.6.2/js/sm-extend.min.js"></script>
-    <script src="../js/picker.js"></script>
+    <script src="../js/sm-city-picker.customer.js"></script>
+
+    <script>
+
+        var isNameValid;
+        var isBirthdayValid;
+
+        var isEmailValid = true;
+        var isIsMerryValid;
+
+
+        $(function () {
+
+            $("#name").on("input propertychange", function () {
+                if ($(this).val() != null && $(this).val() != "") {
+                    $("#user-icon").removeClass("text-orangered").addClass("text-transparent");
+                } else {
+                    $("#user-icon").removeClass("text-transparent").addClass("text-orangered");
+                }
+            });
+
+
+            $("#address").cityPicker({
+                toolbarTemplate: '<header class="bar bar-nav">\
+                    <button class="button button-link pull-right close-picker">确定</button>\
+                    <h1 class="title">请选择地址(area)</h1>\
+                    </header>',
+            });
+
+            function countAddress() {
+                $("#addressCount").text($("#addressDetail").val().length);
+                // addressIcon();
+            }
+
+            function addressIcon() {
+                if (invalidAddress()) {
+                    $("#address-icon").removeClass("text-transparent").addClass("text-orangered");
+                } else {
+                    $("#address-icon").removeClass("text-orangered").addClass("text-transparent");
+                }
+            }
+
+            $("#addressDetail").on("input propertychange", countAddress);
+            // $("#address").on("textarea propertychange", addressIcon);
+
+            setAddressDetail("good");
+
+            function setAddressDetail(value) {
+                $("#addressDetail").val(value);
+                countAddress();
+            }
+
+            $("#email").on("input propertychange", function () {
+                if (/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test($(this).val()) || $(this).val() == "") {
+                    $("#email-icon").removeClass("text-orangered").addClass("text-transparent");
+                    isEmailValid = true;
+                } else {
+                    $("#email-icon").removeClass("text-transparent").addClass("text-orangered");
+                    isEmailValid = false;
+                }
+            });
+
+
+            $("#modifyPersonInfo").on("click", function () {
+                if (!validPersonInfo())
+                    return;
+                //$.confirm('性别、生日不可重复修改', '确认提交?',
+                $.confirm('确认提交?',
+                    function () {
+                        var bir = $("#birthday").val();
+                        var address = $("#address").val();
+                        var province;
+                        var city;
+                        var country;
+                        if (address !== null && address.trim() !== "") {
+                            var arrAddress;
+                            arrAddress = address.split(" ");
+                            province = arrAddress[0];
+                            city = arrAddress[1];
+                            if (arrAddress.length == 3) {
+                                country = arrAddress[2];
+                            }
+                        }
+                        else {
+
+                        }
+
+                        var params = {
+                            givenName: "",
+                            surName: $("#name").val(),
+                            sex: $("#sex").val(),
+                            email: $("#email").val(),
+                            birthday: bir.substr(0, 4) + bir.substr(5, 2) + bir.substr(8, 2),
+                            maritalStatus: $("#marry").val(),
+                            country: "CN",
+                            province: province,
+                            city: city,
+                            zone: country,
+                            address: $("#addressDetail").val(),
+                            job: "",
+                            income: "",
+                            licensePlate: "",
+                            isHaveChrilden: "0"
+                        };
+                        $.ajax({
+                            url: "http://mh.accurate9.com:9092/api/mh/user/update_member_info",
+                            "headers": {
+                                "jwt_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJicmFuZENvZGUiOiJtaCIsIm9wZW5JZCI6IiIsIm1vYmlsZSI6IjEzMTYxOTU1MDA4IiwiZXhwIjoxNDY4NDE1Mjk2LCJpc3MiOiJsaWNoZSJ9.SSC0OA26vBVrqWMB2UNO2DCSu4nZJK3Si_hon7ig8NQ"
+                            },
+                            type: "POST",
+                            data: params,
+                            dataType: "json",
+                            beforeSend: function () {
+                                $.showPreloader();
+                            },
+                            success: function (data, status, jqXHR) {
+                                $.hidePreloader();
+                                if (data != null && data.success) {
+                                    $.toast("保存成功", "success");
+                                }
+                                else {
+                                    $.toast("保存失败", "error");
+
+                                }
+                            },
+                            error: function (data) {
+                                $.hidePreloader();
+                                console.log(data);
+                                $.toast("保存失败", "error");
+
+                            }
+                        });
+                    },
+                    function () {
+                        //点击了取消
+                    });
+
+            });
+
+        });
+
+        function validPersonInfo() {
+            var isValid = false;
+            if ($("#name").val() == null || $("#name").val().trim() == "") {
+                $.toast("姓名录入有误!");
+            }
+            else if (!isEmailValid) {
+                $.toast("邮箱录入有误!");
+            }
+            else if (invalidAddress()) {
+                $.toast("地址录入有误!");
+            }
+            else {
+                isValid = true;
+            }
+            return isValid;
+        }
+        //如果详细有值，省市没有值，则返回true
+        function invalidAddress() {
+            return $("#addressDetail").val() != null && $("#addressDetail").val().trim() != "" &&
+                ($("#address").val() == null || $("#address").val().trim() == "");
+        }
+    </script>
 </body>
 
 </html>
