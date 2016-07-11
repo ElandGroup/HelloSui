@@ -209,7 +209,7 @@
 
             function countAddress() {
                 $("#addressCount").text($("#addressDetail").val().length);
-                // addressIcon();
+                 addressIcon();
             }
 
             function addressIcon() {
@@ -221,7 +221,7 @@
             }
 
             $("#addressDetail").on("input propertychange", countAddress);
-            // $("#address").on("textarea propertychange", addressIcon);
+            $("#address").on("blur", addressIcon);
 
             setAddressDetail("good");
 
